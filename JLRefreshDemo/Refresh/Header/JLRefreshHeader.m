@@ -23,10 +23,10 @@
 - (NSMutableDictionary *)stateTitle {
     if (!_stateTitle) {
         _stateTitle = [@{
-                         @(JLRefreshStateIdle)          : @"下拉Refresh",
-                         @(JLRefreshStatePulling)       : @"下拉刷新",
-                         @(JLRefreshStateWillRefresh)   : @"松开加载",
-                         @(JLRefreshStateRefreshing)    : @"加载中..."
+                         @(JLRefreshStateIdle)          : @"pull to refresh",
+                         @(JLRefreshStatePulling)       : @"pull to refresh",
+                         @(JLRefreshStateWillRefresh)   : @"loosen to refresh",
+                         @(JLRefreshStateRefreshing)    : @"loading..."
                          } mutableCopy];
     }
     return _stateTitle;

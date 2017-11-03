@@ -47,9 +47,9 @@ NSString *const JLRefreshKeyPathState = @"state";
     self.jl_width = CGRectGetWidth(self.superview.frame);
 }
 
-- (void)dealloc {
-    [self resignObserver];
-}
+//- (void)dealloc {
+//    [self resignObserver];
+//}
 
 /**添加观察者*/
 - (void)registObserver {
@@ -57,7 +57,6 @@ NSString *const JLRefreshKeyPathState = @"state";
     
     [_scrollView addObserver:self forKeyPath:JLRefreshKeyPathContentOffset options:options context:nil];
     [_scrollView addObserver:self forKeyPath:JLRefreshKeyPathContentSize options:options context:nil];
-    [_scrollView addObserver:self forKeyPath:JLRefreshKeyPathState options:options context:nil];
     _pan = _scrollView.panGestureRecognizer;
     [_pan addObserver:self forKeyPath:JLRefreshKeyPathState options:options context:nil];
     
@@ -66,16 +65,27 @@ NSString *const JLRefreshKeyPathState = @"state";
 /**移除观察者*/
 - (void)resignObserver {
     
-    [_scrollView removeObserver:self forKeyPath:JLRefreshKeyPathContentOffset];
-    [_scrollView removeObserver:self forKeyPath:JLRefreshKeyPathContentSize];
-    [_scrollView removeObserver:self forKeyPath:JLRefreshKeyPathState];
+    /** fix crash while exit viewcontroller <Exception: NSInternalInconsistencyException>
+     *   self.superview == _scrollview
+     *   but superview is readonly ,while invoke this method,the _scrollview has been dealloced,then it get a wild pointer
+     *   if we use self.superview to get the object that is nil
+     */
+    [self.superview removeObserver:self forKeyPath:JLRefreshKeyPathContentOffset];
+    [self.superview removeObserver:self forKeyPath:JLRefreshKeyPathContentSize];
     [_pan removeObserver:self forKeyPath:JLRefreshKeyPathState];
     _pan = nil;
+    
+    
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
+    [super willMoveToSuperview:newSuperview];
     
     [self resignObserver];
+    if (newSuperview == nil) {
+        _scrollView = nil;
+        return;
+    }
     // 父控件不是ScrollView，不做设置
     if (newSuperview && ![newSuperview isKindOfClass:[UIScrollView class]]) {
         _scrollView = nil;

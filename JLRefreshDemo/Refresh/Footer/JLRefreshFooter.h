@@ -13,5 +13,8 @@
 @property (nonatomic,assign) BOOL showDefaultTips;
 
 - (void)noMoreData;
+- (void)setRefreshTitle:(NSString *)title forState:(JLRefreshState)state;
+- (NSString *)refreshTitleForState:(JLRefreshState)state;
+- (void)showTip;
 
 @end
