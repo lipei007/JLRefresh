@@ -25,7 +25,7 @@
         _refreshTitleLabel = [[UILabel alloc] init];
         _refreshTitleLabel.textAlignment = NSTextAlignmentCenter;
         _refreshTitleLabel.font = [UIFont systemFontOfSize:14.0f];
-        _refreshTitleLabel.hidden = YES;
+        _refreshTitleLabel.hidden = NO;
     }
     return _refreshTitleLabel;
 }
