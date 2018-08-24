@@ -135,6 +135,8 @@
                 
                 self.state = JLRefreshStateWillRefresh; // 4
                 
+            } else if (self.state == JLRefreshStateWillRefresh && offsetY < idle2WillRefresh) {
+                self.state = JLRefreshStatePulling; 
             }
             
            
